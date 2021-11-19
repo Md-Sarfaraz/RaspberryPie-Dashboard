@@ -1,14 +1,10 @@
-import { Line } from "react-chartjs-2";
-import React, { useEffect, useRef } from 'react'
-import { io } from "socket.io-client";
+import { Bar } from "react-chartjs-2";
+import React, { useContext, useEffect, useRef } from 'react'
+import { SocketContext } from "../services/SocketContext";
 
-const socket = io("http://192.168.100.125:9080")
 
 let ctdata = []
 let ctlabes = []
-
-
-
 
 const livedata = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -53,32 +49,44 @@ const options = {
 export const ChartData = () => {
 
     const refchart = useRef()
-
+    const socket = useContext(SocketContext).socket
 
     useEffect(() => {
-        console.log(" first  Test")
+
         socket.on("allcurrentinfo", (cpu) => {
-            let temper
-            temper = cpu.temperature.toFixed(2)
-            if (ctdata.length >= 100) {
+            let temper = cpu.temperature.toFixed(2)
+            if (ctdata.length >= 60) {
                 ctlabes.shift()
                 ctdata.shift()
             }
+
             ctdata.push(Number(temper))
-            ctlabes.push(temper)
+            ctlabes.push(cpu.time)
             //refchart.current.data.datasets[0].data.push(Number(temper))
             //refchart.current.data.labels.push(temper)
             //console.log(refchart.current.data.datasets[0].data)
             let lineChart = refchart.current
             lineChart.update();
 
+
         });
-    }, []);
+    }, [socket]);
+
+    useEffect(() => {
+        //console.log(" Hook Test")
+        socket.on("allcurrentinfo", (cpu) => {
+            let temper = cpu.temperature.toFixed(2)
+            //console.log(temper);
+            return () => {
+                socket.off("allcurrentinfo");
+            }
+        });
+    }, [socket]);
 
 
     return (
         <div>
-            <Line data={livedata} ref={refchart} options={options} />
+            <Bar data={livedata} ref={refchart} options={options} />
         </div>
     )
 }

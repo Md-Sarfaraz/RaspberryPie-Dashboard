@@ -11,6 +11,9 @@
 # production
 /build
 
+#python server
+/server
+
 # misc
 .DS_Store
 .env.local
