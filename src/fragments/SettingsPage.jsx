@@ -1,27 +1,55 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Bootstrap2Toggle as Toggle } from 'react-bootstrap-toggle';
-import { } from "admin-lte";
-
+import useLocalStorage from '../services/StorageHook';
+import { ValidateIPaddress as ValidIP } from '../services/Util';
+import { ValidatePort as ValidPort } from '../services/Util';
 
 
 const SettingsPage = () => {
 
-    const mask = useRef(null)
+    const [serverIP, setServerIP] = useLocalStorage('server_ip', '')
+    const [serverPort, setServerPort] = useLocalStorage('server_port', '')
+    const [IP, setIP] = useState(serverIP)
+    const [Port, setPort] = useState(serverPort)
 
-
+    const [connsValue, setConnsValue] = useState("Connected")
     const [toggleActive, setToggleActive] = useState(false)
     useEffect(() => {
 
         console.log("CLicked : ", toggleActive)
-        console.log(mask.current)
+        //console.log(mask.current)
+
 
     }, [toggleActive]);
 
     function onToggle(state, node, evt) {
-        setToggleActive(state)
+        setConnsValue("Connecting ...")
+        setTimeout(function () {
+            if (toggleActive) {
+                //toggleActive = false
+                setToggleActive(state)
+            } else {
+                setToggleActive(state)
+            }
+        }, 2000);
+    }
 
 
+    function onSave(event) {
+        event.preventDefault();
+        console.log(serverIP, serverPort)
+        if (ValidIP(IP)) {
+            setServerIP(IP)
+            console.log("Ip Saved ...")
+        } else {
+            alert("Wrong IP Address")
+        }
+        if (ValidPort(Port)) {
+            setServerPort(Port)
+        } else {
+            alert("Wrong Port Number")
+        }
 
     }
 
@@ -74,20 +102,29 @@ const SettingsPage = () => {
                                             </div>
                                             <div className="card mr-1">
                                                 <div className="card-body row">
+                                                    <div className="col-md-9">
+                                                        <form onSubmit={onSave} className="">
+                                                            <div className="form-row">
+                                                                <div className="input-group col-md-5">
+                                                                    <div className="input-group-prepend">
+                                                                        <span className="input-group-text"><i className="fas fa-laptop" /></span>
+                                                                    </div>
+                                                                    <input type="text" value={IP} onChange={(e) => { setIP(e.target.value) }} className="form-control" placeholder="Server IP" data-inputmask="'alias': 'ip'" data-mask im-insert="true" />
+                                                                </div>
 
-                                                    <div className="input-group col-md-4">
-                                                        <div className="input-group-prepend">
-                                                            <span className="input-group-text"><i className="fas fa-laptop" /></span>
-                                                        </div>
-                                                        <input type="text" ref={mask} className="form-control" data-inputmask="'alias': 'ip'" data-mask im-insert="true" />
+                                                                <div className="col-md-5">
+
+                                                                    <input type="text" value={Port} onChange={(e) => { setPort(e.target.value) }} placeholder="Port No" className="form-control" />
+                                                                </div>
+                                                                <div className=" col-md-2">
+                                                                    <input type="submit" className="form-control btn btn-primary" value="Save" />
+                                                                </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <div className="col-md-2">
-                                                        <input type="text" className="form-control" />
-                                                    </div>
-                                                    <div className=" col-md-3"></div>
                                                     <div className=" col-md-3">
                                                         <Toggle onClick={onToggle}
-                                                            on='Connected' off='Disconnected' size="tiny"
+                                                            on={connsValue} off='Disconnected' size="tiny"
                                                             width={140} height={40}
                                                             onstyle='success' offstyle="danger" active={toggleActive}
                                                         />
@@ -97,7 +134,7 @@ const SettingsPage = () => {
                                             </div>
                                         </div>
                                         <div className="col-12 col-md-12 col-lg-4 order-1 order-md-2 card">
-                                            <h3 className="text-primary"><i className="fas fa-paint-brush" /> AdminLTE v3</h3>
+                                            <h3 className="text-primary"><i className="fas fa-cogs" /> Raspberry Pie DashBoard</h3>
                                             <p className="text-muted">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
                                             <br />
                                             <div className="text-muted">

@@ -17,6 +17,7 @@ export const Header = () => {
                         <ul className="navbar-nav">
                             <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
                             <li className="nav-item"> <Link to="/settings" className="nav-link">Settings</Link></li>
+                            <li className="nav-item"> <Link to="/notepad" className="nav-link">NotePad</Link></li>
                             {/* Default Dropdown Menu of AdminLTE */}
                             <li className="nav-item dropdown">
                                 <Link id="dropdownSubMenu1" to="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="nav-link dropdown-toggle">Dropdown</Link>

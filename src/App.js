@@ -5,7 +5,7 @@ import { Dashboard } from "./fragments/Dashboard";
 import { BrowserRouter as Router, Route, Switch, } from "react-router-dom";
 import { SocketProvider } from "./services/SocketContext";
 import SettingsPage from './fragments/SettingsPage';
-
+import NotePad from "./fragments/NotePad";
 
 function App() {
 
@@ -25,6 +25,9 @@ function App() {
             <SocketProvider>
               <SettingsPage />
             </SocketProvider>
+          </Route>
+          <Route exact path="/notepad">
+            <NotePad />
           </Route>
         </Switch>
 
