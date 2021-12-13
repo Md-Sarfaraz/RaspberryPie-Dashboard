@@ -1,3 +1,17 @@
 .md-preview{
-    
+    padding: auto;
+    background-color: darkgray;
+  
+}
+
+.scroll{
+    overflow: hidden;
+    resize: vertical;
+  }
+  .image-upload>input {
+    display: none;
+  }
+
+.upload-hidden{
+    display: none;
 }
