@@ -19,12 +19,13 @@ const NotePad = () => {
         // inputRef.current.setAttribute('style', 'height:' + (inputRef.current.scrollHeight) + 'px');
         inputRef.current.style.height = 'auto';
         inputRef.current.style.height = (inputRef.current.scrollHeight) + 'px';
-
-        const editor = editorRef.current
-        if (editor) {
-            //editor.scrollTop = editor.scrollHeight
-            //editor.scrollIntoView()
-        }
+        let div = fullView.current
+        div.scrollTop = div.scrollHeight - div.clientHeight;
+        // const editor = editorRef.current
+        // if (editor) {
+        //     //editor.scrollTop = editor.scrollHeight
+        //     //editor.scrollIntoView()
+        // }
     }, [markdown])
 
     function downloadFile(e) {
