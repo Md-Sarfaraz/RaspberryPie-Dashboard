@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
-import { Bootstrap2Toggle as Toggle } from 'react-bootstrap-toggle';
+import React, {useEffect, useState, useRef} from 'react'
+import {Link} from 'react-router-dom'
+import {Bootstrap2Toggle as Toggle} from 'react-bootstrap-toggle';
 import useLocalStorage from '../services/StorageHook';
-import { ValidateIPaddress as ValidIP } from '../services/Util';
-import { ValidatePort as ValidPort } from '../services/Util';
+import {ValidateIPaddress as ValidIP} from '../services/Util';
+import {ValidatePort as ValidPort} from '../services/Util';
 
 
 const SettingsPage = () => {
-
+    const connectbtn = useRef()
     const [serverIP, setServerIP] = useLocalStorage('server_ip', '')
     const [serverPort, setServerPort] = useLocalStorage('server_port', '')
     const [IP, setIP] = useState(serverIP)
@@ -17,7 +17,7 @@ const SettingsPage = () => {
     const [toggleActive, setToggleActive] = useState(false)
     useEffect(() => {
 
-        console.log("CLicked : ", toggleActive)
+        //console.log("CLicked : ", toggleActive)
         //console.log(mask.current)
 
 
@@ -25,14 +25,17 @@ const SettingsPage = () => {
 
     function onToggle(state, node, evt) {
         setConnsValue("Connecting ...")
-        setTimeout(function () {
-            if (toggleActive) {
-                //toggleActive = false
-                setToggleActive(state)
-            } else {
-                setToggleActive(state)
-            }
-        }, 2000);
+        setToggleActive(state)
+        if (toggleActive) {
+            connectbtn.current.onStyle = "btn-warning"
+            console.log(node.onClassName)
+        } else {
+            node.className = 'btn toggle off btn-info'
+            console.log(node.className)
+        }
+        setInterval(() => {
+
+        }, 1000);
     }
 
 
@@ -79,7 +82,8 @@ const SettingsPage = () => {
                                                     <div className="info-box bg-light">
                                                         <div className="info-box-content">
                                                             <span className="info-box-text text-center text-muted">Estimated budget</span>
-                                                            <span className="info-box-number text-center text-muted mb-0">2300</span>
+                                                            <span
+                                                                className="info-box-number text-center text-muted mb-0">2300</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -87,7 +91,8 @@ const SettingsPage = () => {
                                                     <div className="info-box bg-light">
                                                         <div className="info-box-content">
                                                             <span className="info-box-text text-center text-muted">Total amount spent</span>
-                                                            <span className="info-box-number text-center text-muted mb-0">2000</span>
+                                                            <span
+                                                                className="info-box-number text-center text-muted mb-0">2000</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -95,7 +100,8 @@ const SettingsPage = () => {
                                                     <div className="info-box bg-light">
                                                         <div className="info-box-content">
                                                             <span className="info-box-text text-center text-muted">Estimated project duration</span>
-                                                            <span className="info-box-number text-center text-muted mb-0">20 <span>
+                                                            <span
+                                                                className="info-box-number text-center text-muted mb-0">20 <span>
                                                             </span></span></div>
                                                     </div>
                                                 </div>
@@ -107,26 +113,36 @@ const SettingsPage = () => {
                                                             <div className="form-row">
                                                                 <div className="input-group col-md-5">
                                                                     <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fas fa-laptop" /></span>
+                                                                        <span className="input-group-text"><i
+                                                                            className="fas fa-laptop"/></span>
                                                                     </div>
-                                                                    <input type="text" value={IP} onChange={(e) => { setIP(e.target.value) }} className="form-control" placeholder="Server IP" data-inputmask="'alias': 'ip'" data-mask im-insert="true" />
+                                                                    <input type="text" value={IP} onChange={(e) => {
+                                                                        setIP(e.target.value)
+                                                                    }} className="form-control" placeholder="Server IP"
+                                                                           data-inputmask="'alias': 'ip'" data-mask
+                                                                           im-insert="true"/>
                                                                 </div>
 
                                                                 <div className="col-md-5">
 
-                                                                    <input type="text" value={Port} onChange={(e) => { setPort(e.target.value) }} placeholder="Port No" className="form-control" />
+                                                                    <input type="text" value={Port} onChange={(e) => {
+                                                                        setPort(e.target.value)
+                                                                    }} placeholder="Port No" className="form-control"/>
                                                                 </div>
                                                                 <div className=" col-md-2">
-                                                                    <input type="submit" className="form-control btn btn-primary" value="Save" />
+                                                                    <input type="submit"
+                                                                           className="form-control btn btn-primary"
+                                                                           value="Save"/>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <div className=" col-md-3">
-                                                        <Toggle onClick={onToggle}
-                                                            on={connsValue} off='Disconnected' size="tiny"
-                                                            width={140} height={40}
-                                                            onstyle='success' offstyle="danger" active={toggleActive}
+                                                        <Toggle ref={connectbtn} onClick={onToggle}
+                                                                on="Connected" off='Disconnected' size="tiny"
+                                                                width={140} height={40}
+                                                                onstyle='success' offstyle="danger"
+                                                                active={toggleActive}
                                                         />
                                                     </div>
                                                 </div>
@@ -134,9 +150,12 @@ const SettingsPage = () => {
                                             </div>
                                         </div>
                                         <div className="col-12 col-md-12 col-lg-4 order-1 order-md-2 card">
-                                            <h3 className="text-primary"><i className="fas fa-cogs" /> Raspberry Pie DashBoard</h3>
-                                            <p className="text-muted">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
-                                            <br />
+                                            <h3 className="text-primary"><i className="fas fa-cogs"/> Raspberry Pie
+                                                DashBoard</h3>
+                                            <p className="text-muted">Raw denim you probably haven't heard of them jean
+                                                shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh
+                                                dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                                            <br/>
                                             <div className="text-muted">
                                                 <p className="text-sm">Client Company
                                                     <b className="d-block">Deveint Inc</b>
@@ -148,19 +167,24 @@ const SettingsPage = () => {
                                             <h5 className="mt-5 text-muted">Project files</h5>
                                             <ul className="list-unstyled">
                                                 <li>
-                                                    <Link to="#" className="btn-link text-secondary"><i className="far fa-fw fa-file-word" /> Functional-requirements.docx</Link>
+                                                    <Link to="#" className="btn-link text-secondary"><i
+                                                        className="far fa-fw fa-file-word"/> Functional-requirements.docx</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#" className="btn-link text-secondary"><i className="far fa-fw fa-file-pdf" /> UAT.pdf</Link>
+                                                    <Link to="#" className="btn-link text-secondary"><i
+                                                        className="far fa-fw fa-file-pdf"/> UAT.pdf</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#" className="btn-link text-secondary"><i className="far fa-fw fa-envelope" /> Email-from-flatbal.mln</Link>
+                                                    <Link to="#" className="btn-link text-secondary"><i
+                                                        className="far fa-fw fa-envelope"/> Email-from-flatbal.mln</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#" className="btn-link text-secondary"><i className="far fa-fw fa-image " /> Logo.png</Link>
+                                                    <Link to="#" className="btn-link text-secondary"><i
+                                                        className="far fa-fw fa-image "/> Logo.png</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to="#" className="btn-link text-secondary"><i className="far fa-fw fa-file-word" /> Contract-10_12_2014.docx</Link>
+                                                    <Link to="#" className="btn-link text-secondary"><i
+                                                        className="far fa-fw fa-file-word"/> Contract-10_12_2014.docx</Link>
                                                 </li>
                                             </ul>
                                             <div className="text-center mt-5 mb-3">
@@ -175,7 +199,8 @@ const SettingsPage = () => {
                         </div>
                     </div>
                 </div>
-            </div></div >
+            </div>
+        </div>
     )
 }
 

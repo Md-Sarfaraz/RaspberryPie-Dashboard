@@ -1,8 +1,8 @@
-import React, { useCallback, useContext } from 'react'
-import { ShortStatus } from "./ShortStatus";
-import { ChartView } from "./ChartView";
-import { useEffect, useState } from 'react';
-import { SocketContext, SOCKET_ACTION } from '../services/SocketContext';
+import React, {useCallback, useContext} from 'react'
+import {ShortStatus} from "./ShortStatus";
+import {ChartView} from "./ChartView";
+import {useEffect, useState} from 'react';
+import {SocketContext, SOCKET_ACTION} from '../services/SocketContext';
 import useLocalStorage from "../services/StorageHook";
 
 
@@ -42,7 +42,6 @@ export const Dashboard = () => {
 
     return (
         <>
-
             <div className="content-wrapper py-3">
                 <div className="container">
                     <div className="content-header">
@@ -60,8 +59,8 @@ export const Dashboard = () => {
                         </div>
                     </div>
 
-                    <ShortStatus />
-                    <ChartView />
+                    <ShortStatus/>
+                    <ChartView/>
                 </div>
             </div>
 

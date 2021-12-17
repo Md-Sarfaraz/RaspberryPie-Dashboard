@@ -13,10 +13,12 @@ export function ValidatePort(num) {
     return regexExp.test(num);
 }
 
-export function downloadMarkdownAsFile(content, contentType, filename, anchorRef) {
+export function downloadMarkdownAsFile(content, contentType, filename) {
+    const anchorRef = document.createElement('a')
     const file = new Blob([content], { type: contentType });
     anchorRef.href =  URL.createObjectURL(file)
     anchorRef.download = filename
+    anchorRef.click()
 }
 
 export function uploadMarkdownAsFile(){

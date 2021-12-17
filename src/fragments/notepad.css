@@ -1,7 +1,14 @@
-.md-preview{
-    padding: auto;
-    background-color: darkgray;
-  
+.md-editor{
+    padding: 0.5em;
+    background-color: rgb(220, 226, 241);
+    border-radius: 0.4em;
+    
+}
+
+.list-ordering{
+ list-style-type: upper-alpha; 
+ 
+
 }
 
 .scroll{
