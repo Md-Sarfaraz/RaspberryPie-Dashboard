@@ -1,14 +1,13 @@
-import { Line } from "react-chartjs-2";
-import React, { useEffect, useRef } from 'react'
-import { io } from "socket.io-client";
+import { Bar } from "react-chartjs-2";
+import React, { useContext, useEffect, useRef, useCallback } from 'react'
+import { SocketContext, SOCKET_ACTION } from "../services/SocketContext";
+import { useSessionStorage } from "../services/StorageHook";
 
-const socket = io("http://192.168.100.125:9080")
+
+
 
 let ctdata = []
 let ctlabes = []
-
-
-
 
 const livedata = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -52,33 +51,65 @@ const options = {
 
 export const ChartData = () => {
 
+    console.log("chartdat")
     const refchart = useRef()
-
+    const { socket, cpuDispatch } = useContext(SocketContext)
+    const [clientStatus, setClientStatus] = useSessionStorage("socket_status", "")
 
     useEffect(() => {
-        console.log(" first  Test")
-        socket.on("allcurrentinfo", (cpu) => {
-            let temper
-            temper = cpu.temperature.toFixed(2)
-            if (ctdata.length >= 100) {
+        console.log('run chart')
+        //console.log("tes : ", socket,cpuDispatch)
+
+        cpuDispatch(SOCKET_ACTION.EMIT)
+        if (clientStatus.conected) {
+            console.log('already')
+        }
+        socket.on("allcurrentinfo", (info) => {
+            console.log("tes : ", info.time)
+            let temper = info.cpu.temperature.toFixed(2)
+            if (ctdata.length >= 60) {
                 ctlabes.shift()
                 ctdata.shift()
             }
-            ctdata.push(Number(temper))
-            ctlabes.push(temper)
+
+            if (ctlabes.slice(-1) != info.time) {
+                ctdata.push(Number(temper))
+                ctlabes.push(info.time)
+            }
+
             //refchart.current.data.datasets[0].data.push(Number(temper))
             //refchart.current.data.labels.push(temper)
             //console.log(refchart.current.data.datasets[0].data)
-            let lineChart = refchart.current
-            lineChart.update();
+
+
+            // const lineChart = refchart.current
+            // if (lineChart != "") {
+            //     if (lineChart != null) {
+
+            //         lineChart.update();
+            //     }
+
+            // } else {
+            //     console.log("linechat is null : ", lineChart)
+            // }
+
+
+            //let lineChart = refchart.current
+
+            setTimeout(() => {
+
+            }, 200);
+            if (refchart.current) {
+                refchart.current.update();
+            }
+
 
         });
     }, []);
 
-
     return (
         <div>
-            <Line data={livedata} ref={refchart} options={options} />
+            <Bar ref={refchart} data={livedata} options={options} />
         </div>
     )
 }

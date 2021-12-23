@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { io } from "socket.io-client";
-
-const socket = io("http://192.168.100.125:9080")
+import React, { useContext, useEffect } from 'react'
+import { SocketContext, SOCKET_ACTION } from '../services/SocketContext'
 
 
 export const ShortStatus = (props) => {
 
-    const [cputemp, setCputemp] = useState(0)
-    const [cpuusage, setCpuusage] = useState(0)
-    const [ramused, setRamused] = useState(0)
-    
+
+    const socketContext = useContext(SocketContext)
+    let cpuinfo = socketContext.cpuState
+
+
+    // const [cputemp, setCputemp] = useState(0)
+    // const [cpuusage, setCpuusage] = useState(0)
+    // const [ramused, setRamused] = useState(0)
+
+
+    // useEffect(() => {
+    //     socket.on("allcurrentinfo", (cpu) => {
+    //         let temper
+    //         temper = cpu.temperature.toFixed(2)
+    //         setCputemp(temper)
+    //         setCpuusage(cpu.usage)
+    //         setRamused(cpu.percentUsedRam)
+    //         //console.log("cpu : "+ cpu)
+
+    //         return ()=>{
+    //             socket.off("allcurrentinfo");
+    //         }
+    //     });
+    // }, [socket]);
 
     useEffect(() => {
-        console.log(" first  Test")
-        socket.on("allcurrentinfo", (cpu) => {
-            let temper
-            temper = cpu.temperature.toFixed(2)
-            setCputemp(temper)
-            setCpuusage(cpu.usage)
-            setRamused(cpu.percentUsedRam)
-            //console.log("cpu : "+ cpu)
-        });
-    }, []);
+       // console.log("check in effect : " + cpuinfo)
+
+    }, [cpuinfo])
+
+    //socketContext.cpuDispatch(SOCKET_ACTION.ON)
 
 
-    useEffect(() => {
-        if (socket.connected === false) {
-            socket.emit("allcurrentinfo", () => {
-                console.log(" checking ")
-                socket.close()
-            });
-        }
-    });
-
+ 
 
     return (
         <div>
@@ -45,7 +50,7 @@ export const ShortStatus = (props) => {
                             <div className="info-box-content ml-2">
                                 <span className="info-box-text">CPU Temperature</span>
                                 <span className="info-box-number">
-                                    {cputemp} <small> %</small>
+                                    {socketContext.cpuState.temperature} <small> %</small>
                                 </span>
                             </div>
                         </div>
@@ -57,7 +62,7 @@ export const ShortStatus = (props) => {
                             <div className="info-box-content ml-2">
                                 <span className="info-box-text">CPU Usage</span>
                                 <span className="info-box-number">
-                                    {cpuusage} <small> %</small>
+                                    {cpuinfo.usage} <small> %</small>
                                 </span>
                             </div>
                         </div>
@@ -69,7 +74,7 @@ export const ShortStatus = (props) => {
                             <div className="info-box-content ml-2">
                                 <span className="info-box-text">RAM Usage</span>
                                 <span className="info-box-number">
-                                    {ramused} <small> %</small>
+                                    {cpuinfo.percentUsedRam} <small> %</small>
                                 </span>
                             </div>
                         </div>
@@ -81,7 +86,7 @@ export const ShortStatus = (props) => {
                             <div className="info-box-content ml-2">
                                 <span className="info-box-text">Disk Usage</span>
                                 <span className="info-box-number">
-                                    {} <small> %</small>
+                                    { } <small> %</small>
                                 </span>
                             </div>
                         </div>

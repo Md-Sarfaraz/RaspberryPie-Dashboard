@@ -19,6 +19,7 @@ export const Footer = () => {
         borderTopStyle: "solid",
         borderTopWidth: "1px",
         color: "#869099",
+        position: "sticky",
     }
     return (
         <div className="" style={style}>

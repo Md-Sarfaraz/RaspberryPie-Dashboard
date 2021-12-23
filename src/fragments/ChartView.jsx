@@ -5,7 +5,7 @@ export const ChartView = () => {
     return (
         <div>
             <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-10">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
@@ -16,13 +16,13 @@ export const ChartView = () => {
                         <div className="card-body">
                             <div className="position-relative mb-4">
                                 <div className="chartjs-size-monitor">
-                                 <ChartData />
+                                    <ChartData />
                                 </div>
-                                                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            <div className="col-sm-6">
+                <div className="col-sm-2">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
@@ -43,9 +43,12 @@ export const ChartView = () => {
                                     <span className="text-muted">Since last week</span>
                                 </p>
                             </div>
-                            
-                            <div className="position-relative mb-4"><div className="chartjs-size-monitor"><div className="chartjs-size-monitor-expand"><div  /></div><div className="chartjs-size-monitor-shrink"><div  /></div></div>
-                                <canvas id="visitors-chart" style={{ display: 'block', width: 764, height: 200 }} className="chartjs-render-monitor" width={764} height={200} />
+
+                            <div className="position-relative mb-4">
+                                <div className="chartjs-size-monitor">
+                                    {/* <ChartData /> */}
+                                </div>
+
                             </div>
                             <div className="d-flex flex-row justify-content-end">
                                 <span className="mr-2">
@@ -57,7 +60,7 @@ export const ChartView = () => {
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
 
 

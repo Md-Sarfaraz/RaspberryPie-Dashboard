@@ -1,0 +1,19 @@
+.md-editor{
+    padding: 0.5em;
+    background-color: rgb(220, 226, 241);
+    border-radius: 0.4em;
+    
+}
+
+
+.scroll{
+    overflow: hidden;
+    resize: vertical;
+  }
+  .image-upload>input {
+    display: none;
+  }
+
+.upload-hidden{
+    display: none;
+}
