@@ -30,21 +30,18 @@ export const ShortStatus = (props) => {
     // }, [socket]);
 
     useEffect(() => {
-        console.log("check in effect : " + cpuinfo.temperature)
+       // console.log("check in effect : " + cpuinfo)
 
     }, [cpuinfo])
 
     //socketContext.cpuDispatch(SOCKET_ACTION.ON)
 
 
-    function btnclick() {
-        console.log("check>> : " + cpuinfo.temperature)
-    }
+ 
 
     return (
         <div>
             <div className="container my-3" >
-                <button className="btn btn-secondary m-3" onClick={btnclick}>Check</button>
                 <div className="row">
                     <div className="col-sm-3">
                         <div className="info-box">

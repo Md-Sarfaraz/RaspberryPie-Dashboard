@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import style from 'react-syntax-highlighter/dist/esm/styles/prism/coldark-cold';
 import useLocalStorage from '../services/StorageHook';
 import { downloadMarkdownAsFile } from '../services/Util';
+import Alert from 'react-bootstrap/Alert'
 import './notepad.css'
 import axios, { post } from 'axios';
 
@@ -14,6 +15,7 @@ const NotePad = () => {
     const inputRef = useRef("")
     const fullView = useRef()
     const [mdView, setMdView] = useState({ showEditor: true, showPreview: true })
+    const [saved, setsaved] = useState(false)
     const [markdown, setMarkdown] = useLocalStorage('mdkey', "Welcome to Markdwon Editor")
     useEffect(() => {
         // console.log(inputRef.current.scrollHeight)
@@ -66,11 +68,15 @@ const NotePad = () => {
             e.preventDefault();
             return false;
         }
-        if((e.ctrlKey || e.metaKey) && charCode === 's') {
-            alert("Saved");
-          }else if((e.ctrlKey || e.metaKey) && charCode === 'c') {
+        if ((e.ctrlKey || e.metaKey) && charCode === 's') {
+            e.preventDefault();
+            setsaved(true)
+            setTimeout(() => {
+                setsaved(false)
+            }, 1500);
+        } else if ((e.ctrlKey || e.metaKey) && charCode === 'c') {
             alert("Copied");
-          }
+        }
     }
 
     function toogleFullWidth(e) {
@@ -96,7 +102,7 @@ const NotePad = () => {
                     <div className="card my-3" style={{ height: '100%' }}>
                         <div className="card-header bg-primary row">
                             <div className='col-sm-4'>
-                                <h4 className=''>MarkDown Editor</h4>
+                                <h4 className=''>Markdown Editor</h4>
                             </div>
                             <div className="col-sm-4">
                                 <div className="btn-group " role="group">
@@ -126,7 +132,13 @@ const NotePad = () => {
                                         value={markdown} onKeyDown={handleKeys} onChange={(e) => { setMarkdown(e.target.value) }} ></textarea>
                                 </div>
                                 <div className="col-md" style={mdView.showPreview ? {} : { display: 'none' }} >
-                                    <ReactMarkdown className='list-ordering'
+                                    <Alert show={saved} variant="success" className='alert alert-success'>
+                                        <strong>Saved.</strong> Temporary LocalStorage Saved
+                                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </Alert>
+                                    <ReactMarkdown 
                                         children={markdown}
                                         rehypePlugins={[rehypeRaw]}
                                         remarkPlugins={[remarkGfm]}

@@ -1,4 +1,4 @@
-
+import { useEffect } from 'react'
 
 
 export function ValidateIPaddress(ipaddress) {
@@ -16,11 +16,23 @@ export function ValidatePort(num) {
 export function downloadMarkdownAsFile(content, contentType, filename) {
     const anchorRef = document.createElement('a')
     const file = new Blob([content], { type: contentType });
-    anchorRef.href =  URL.createObjectURL(file)
+    anchorRef.href = URL.createObjectURL(file)
     anchorRef.download = filename
     anchorRef.click()
 }
 
-export function uploadMarkdownAsFile(){
+export function uploadMarkdownAsFile() {
 
+}
+
+export function useCleanOnReload() {
+    useEffect(() => {
+        window.onbeforeunload = function () {
+            return true;
+        };
+
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, []);
 }
