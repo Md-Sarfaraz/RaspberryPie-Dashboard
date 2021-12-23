@@ -52,22 +52,14 @@ const options = {
 export const ChartData = () => {
 
     console.log("chartdat")
-    let lineChart = ""
-
     const refchart = useRef()
     const { socket, cpuDispatch } = useContext(SocketContext)
     const [clientStatus, setClientStatus] = useSessionStorage("socket_status", "")
-    const assignupdatecall = useCallback(
-        () => {
-            console.log("chartdatatest : ", refchart.current)
-            lineChart = refchart.current
-        },
-        [refchart],
-    )
+
     useEffect(() => {
         console.log('run chart')
         //console.log("tes : ", socket,cpuDispatch)
-        lineChart = refchart.current
+
         cpuDispatch(SOCKET_ACTION.EMIT)
         if (clientStatus.conected) {
             console.log('already')
@@ -89,17 +81,27 @@ export const ChartData = () => {
             //refchart.current.data.labels.push(temper)
             //console.log(refchart.current.data.datasets[0].data)
 
-            if (lineChart != "") {
-                if (lineChart != null) {
 
-                    lineChart.update();
-                }
+            // const lineChart = refchart.current
+            // if (lineChart != "") {
+            //     if (lineChart != null) {
 
-            } else {
-                console.log("linechat is null : ", lineChart)
+            //         lineChart.update();
+            //     }
+
+            // } else {
+            //     console.log("linechat is null : ", lineChart)
+            // }
+
+
+            //let lineChart = refchart.current
+
+            setTimeout(() => {
+
+            }, 200);
+            if (refchart.current) {
+                refchart.current.update();
             }
-
-
 
 
         });
@@ -107,7 +109,7 @@ export const ChartData = () => {
 
     return (
         <div>
-            <Bar data={livedata} ref={refchart} options={options} />
+            <Bar ref={refchart} data={livedata} options={options} />
         </div>
     )
 }
