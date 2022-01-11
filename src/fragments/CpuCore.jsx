@@ -1,7 +1,7 @@
-import {Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import React, { useContext, useEffect, useRef, useCallback } from 'react'
 import { SocketContext, SOCKET_ACTION } from "../services/SocketContext";
-import { useSessionStorage } from "../services/StorageHook";
+import { useLocalStorage, useSessionStorage } from "../services/StorageHook";
 
 
 let ctdata = []
@@ -47,44 +47,53 @@ const options = {
     }
 };
 
-export const ChartData = () => {
+export const CpuCore = () => {
 
-    // console.log("chartdat")
     const refchart = useRef()
     const { socket, cpuDispatch } = useContext(SocketContext)
-    const [clientStatus, setClientStatus] = useSessionStorage("socket_status", "")
-
+    const [clientStatus, setClientStatus] = useSessionStorage("socket_status", "t")
+    const [cpuSession, setCpuSession] = useLocalStorage("cpucore", { 'data': [], 'label': [] })
     useEffect(() => {
-        // console.log('run chart')
-        //console.log("tes : ", socket,cpuDispatch)
-
-        cpuDispatch(SOCKET_ACTION.EMIT)
+        console.log('already', clientStatus)
         if (clientStatus.conected) {
-            // console.log('already')
+            console.log('already : ', clientStatus)
+        }
+        for (let i = 0; i < cpuSession.data.length; i++) {
+            ctdata.push(cpuSession.data[i])
+            ctlabes.push(cpuSession.label[i])
         }
         socket.on("allcurrentinfo", (info) => {
-            // console.log("tes : ", info.time)
             let temper = info.cpu.temperature.toFixed(2)
             if (ctdata.length >= 60) {
                 ctlabes.shift()
                 ctdata.shift()
             }
             if (ctlabes.slice(-1) != info.time) {
+                console.log('ctdata.length : ', ctdata.length, ctlabes.length)
                 ctdata.push(Number(temper))
                 ctlabes.push(info.time)
+                let cdata = cpuSession.data
+                let clabel = cpuSession.label
+                setCpuSession({
+                    'data': ctdata,
+                    'label': ctlabes
+                })
+                if (refchart.current) {
+                    console.log("ref : true ")
+                    refchart.current.update();
+                } else {
+                    console.log("refchart : ", refchart.current)
+                }
             }
-            //refchart.current.data.datasets[0].data.push(Number(temper))
-            //refchart.current.data.labels.push(temper)
-            //console.log(refchart.current.data.datasets[0].data)
-            if (refchart.current) {
-                refchart.current.update();
-            } else {
-                console.log("refchart : ", refchart.current)
-            }
-
         });
-    }, []);
+    }, [socket]);
 
+    function limitSize(array, size) {
+        while (array.length >= size) {
+            array.shift()
+        }
+        return array
+    }
     return (
         <div>
             <Line ref={refchart} data={livedata} options={options} />

@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import style from 'react-syntax-highlighter/dist/esm/styles/prism/coldark-cold';
-import useLocalStorage from '../services/StorageHook';
+import {useLocalStorage} from '../services/StorageHook';
 import { downloadMarkdownAsFile } from '../services/Util';
 import Alert from 'react-bootstrap/Alert'
 import './notepad.css'

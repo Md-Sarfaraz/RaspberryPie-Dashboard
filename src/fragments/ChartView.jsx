@@ -1,11 +1,12 @@
 import React from 'react'
 import { ChartData } from "./ChartData";
+import { CpuCore } from "./CpuCore";
 
 export const ChartView = () => {
     return (
         <div>
             <div className="row">
-                <div className="col-sm-10">
+                <div className="col-sm-2">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
@@ -22,7 +23,7 @@ export const ChartView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-sm-2">
+                <div className="col-sm-10">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
@@ -31,24 +32,10 @@ export const ChartView = () => {
                             </div>
                         </div>
                         <div className="card-body">
-                            <div className="d-flex">
-                                <p className="d-flex flex-column">
-                                    <span className="text-bold text-lg">820</span>
-                                    <span>Visitors Over Time</span>
-                                </p>
-                                <p className="ml-auto d-flex flex-column text-right">
-                                    <span className="text-success">
-                                        <i className="fas fa-arrow-up" /> 12.5%
-                                    </span>
-                                    <span className="text-muted">Since last week</span>
-                                </p>
-                            </div>
-
                             <div className="position-relative mb-4">
                                 <div className="chartjs-size-monitor">
-                                    {/* <ChartData /> */}
+                                    <CpuCore />
                                 </div>
-
                             </div>
                             <div className="d-flex flex-row justify-content-end">
                                 <span className="mr-2">

@@ -13,7 +13,7 @@ function getSavedSession(key, defaultValue) {
     return defaultValue
 }
 
-export default function useLocalStorage(key, defaultValue) {
+export function useLocalStorage(key, defaultValue) {
     const [value, setValue] = useState(() => {
         return getSavedValue(key, defaultValue)
     })

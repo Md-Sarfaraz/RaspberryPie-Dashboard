@@ -3,7 +3,7 @@ import { ShortStatus } from "./ShortStatus";
 import { ChartView } from "./ChartView";
 import { useEffect, useState } from 'react';
 import { SocketContext, SOCKET_ACTION } from '../services/SocketContext';
-import useLocalStorage from "../services/StorageHook";
+import {useLocalStorage} from "../services/StorageHook";
 
 
 export const Dashboard = () => {

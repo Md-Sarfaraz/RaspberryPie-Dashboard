@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import useLocalStorage from '../services/StorageHook';
+import {useLocalStorage} from '../services/StorageHook';
 import { ValidateIPaddress as ValidIP } from '../services/Util';
 import { ValidatePort as ValidPort } from '../services/Util';
 import { SocketContext } from "../services/SocketContext";
