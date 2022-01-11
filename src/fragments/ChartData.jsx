@@ -1,6 +1,9 @@
 import { Bar } from "react-chartjs-2";
-import React, { useContext, useEffect, useRef } from 'react'
-import { SocketContext } from "../services/SocketContext";
+import React, { useContext, useEffect, useRef, useCallback } from 'react'
+import { SocketContext, SOCKET_ACTION } from "../services/SocketContext";
+import { useSessionStorage } from "../services/StorageHook";
+
+
 
 
 let ctdata = []
@@ -48,45 +51,65 @@ const options = {
 
 export const ChartData = () => {
 
+    console.log("chartdat")
     const refchart = useRef()
-    const socket = useContext(SocketContext).socket
+    const { socket, cpuDispatch } = useContext(SocketContext)
+    const [clientStatus, setClientStatus] = useSessionStorage("socket_status", "")
 
     useEffect(() => {
+        console.log('run chart')
+        //console.log("tes : ", socket,cpuDispatch)
 
-        socket.on("allcurrentinfo", (cpu) => {
-            let temper = cpu.temperature.toFixed(2)
+        cpuDispatch(SOCKET_ACTION.EMIT)
+        if (clientStatus.conected) {
+            console.log('already')
+        }
+        socket.on("allcurrentinfo", (info) => {
+            console.log("tes : ", info.time)
+            let temper = info.cpu.temperature.toFixed(2)
             if (ctdata.length >= 60) {
                 ctlabes.shift()
                 ctdata.shift()
             }
 
-            ctdata.push(Number(temper))
-            ctlabes.push(cpu.time)
+            if (ctlabes.slice(-1) != info.time) {
+                ctdata.push(Number(temper))
+                ctlabes.push(info.time)
+            }
+
             //refchart.current.data.datasets[0].data.push(Number(temper))
             //refchart.current.data.labels.push(temper)
             //console.log(refchart.current.data.datasets[0].data)
-            let lineChart = refchart.current
-            lineChart.update();
 
 
-        });
-    }, [socket]);
+            // const lineChart = refchart.current
+            // if (lineChart != "") {
+            //     if (lineChart != null) {
 
-    useEffect(() => {
-        //console.log(" Hook Test")
-        socket.on("allcurrentinfo", (cpu) => {
-            let temper = cpu.temperature.toFixed(2)
-            //console.log(temper);
-            return () => {
-                socket.off("allcurrentinfo");
+            //         lineChart.update();
+            //     }
+
+            // } else {
+            //     console.log("linechat is null : ", lineChart)
+            // }
+
+
+            //let lineChart = refchart.current
+
+            setTimeout(() => {
+
+            }, 200);
+            if (refchart.current) {
+                refchart.current.update();
             }
-        });
-    }, [socket]);
 
+
+        });
+    }, []);
 
     return (
         <div>
-            <Bar data={livedata} ref={refchart} options={options} />
+            <Bar ref={refchart} data={livedata} options={options} />
         </div>
     )
 }

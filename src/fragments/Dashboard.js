@@ -41,29 +41,29 @@ export const Dashboard = () => {
 
 
     return (
-        <>
 
-            <div className="content-wrapper py-3">
-                <div className="container">
-                    <div className="content-header">
-                        <div className="container">
-                            <div className="row mb-2">
-                                <div className="col-sm-6">
-                                    <h1 className="m-0 text-dark"> Raspberry Pie <small>System Monitor</small></h1>
-                                </div>
-                                <div className="col-sm-6 d-flex flex-row justify-content-end">
-                                    <button className="btn btn-info" onClick={startinfo}>Connect</button>
-                                    <p className='pl-3 my-auto'>{status}</p>
-                                </div>
-
+        <div className="content-wrapper">
+            <div className="container">
+                <div className="content-header">
+                    <div className="container">
+                        <div className="row mb-2">
+                            <div className="col-sm-6">
+                                <h1 className="m-0 text-dark"> Raspberry Pie <small>System Monitor</small></h1>
                             </div>
+                            <div className="col-sm-6 d-flex flex-row justify-content-end">
+                                <button className="btn btn-info" onClick={startinfo}>Connect</button>
+                                <p className='pl-3 my-auto'>{status}</p>
+                            </div>
+
                         </div>
                     </div>
-
+                </div>
+                <div className="content">
                     <ShortStatus />
                     <ChartView />
                 </div>
-            </div>
 
-        </>)
+            </div>
+        </div>
+    )
 }
