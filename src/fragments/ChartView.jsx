@@ -6,7 +6,7 @@ export const ChartView = () => {
     return (
         <div>
             <div className="row">
-                <div className="col-sm-2">
+                <div className="col-sm-4">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
@@ -23,7 +23,7 @@ export const ChartView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-sm-10">
+                <div className="col-sm-8">
                     <div className="card">
                         <div className="card-header border-0">
                             <div className="d-flex justify-content-between">
